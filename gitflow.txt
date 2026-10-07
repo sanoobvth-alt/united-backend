@@ -1,0 +1,25 @@
+# create feature
+git checkout develop
+git pull origin develop
+git checkout -b feature/course-module
+
+# work
+git add .
+git commit -m "..."
+git push origin feature/course-module
+
+# complete module
+git checkout develop
+git pull origin develop
+git merge feature/course-module
+git push origin develop
+
+# delete feature
+git branch -d feature/course-module
+git push origin --delete feature/course-module
+
+# release
+git checkout main
+git pull origin main
+git merge develop
+git push origin main 

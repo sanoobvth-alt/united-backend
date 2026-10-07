@@ -1,0 +1,474 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Edulink
+meta:
+  id: wrk_d1406251cbdc4911ae187a3530920d13
+  created: 1772202913602
+  modified: 1772202913602
+  description: ""
+collection:
+  - name: Edulink
+    meta:
+      id: fld_3a417fca69db48d18ac1eb9002702c59
+      created: 1772202913608
+      modified: 1772202913608
+      sortKey: -1772202904091
+      description: ""
+    children:
+      - name: auth
+        meta:
+          id: fld_9ae86f2e655d4a10ba8c77a90314d1fc
+          created: 1772202913609
+          modified: 1772202913609
+          sortKey: -1772202904090
+          description: ""
+        children:
+          - url: "{{ _.base_url }}"
+            name: login
+            meta:
+              id: req_b06e5f35de5a40a3ba15db58c90f9cd4
+              created: 1772202913610
+              modified: 1772203150005
+              isPrivate: false
+              description: ""
+              sortKey: -1772202904089
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                    "email":"sanoob02@gmail.com",
+                    "password":"12323"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{_['base_url']}}auth/signup-instructor/"
+            name: Instructor Sign Up
+            meta:
+              id: req_560d56115fe24d729dc37b7b6c10cc78
+              created: 1772202913617
+              modified: 1772202913617
+              isPrivate: false
+              description: ""
+              sortKey: -1772202904087
+            method: POST
+            body:
+              mimeType: multipart/form-data
+              params:
+                - name: firstName
+                  value: samuel
+                  disabled: false
+                  type: text
+                - name: lastName
+                  value: Jhon
+                  disabled: false
+                  type: text
+                - name: email
+                  value: samualjhon@gmail.coms
+                  disabled: false
+                  type: text
+                - name: password
+                  value: "1234"
+                  disabled: false
+                  type: text
+                - name: gender
+                  value: male
+                  disabled: false
+                  type: text
+                - name: phone
+                  value: "860632610"
+                  disabled: false
+                  type: text
+                - name: dateOfBirth
+                  value: 1998-07-03
+                  disabled: false
+                  type: text
+                - name: image
+                  disabled: false
+                  fileName: /Users/mac/Documents/Sanoob/106.jpg
+                  type: file
+                - name: bio
+                  value: Iam  a instructor of cloud managemnet system
+                  disabled: false
+                  type: text
+            headers:
+              - name: Content-Type
+                value: multipart/form-data
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{_['base_url']}}auth/signup-student/"
+            name: Student Sign Up
+            meta:
+              id: req_5d796733d04645f6856f58779c584c1c
+              created: 1772202913617
+              modified: 1772202913617
+              isPrivate: false
+              description: ""
+              sortKey: -1772202904088
+            method: POST
+            body:
+              mimeType: multipart/form-data
+              params:
+                - name: firstName
+                  value: samuel
+                  disabled: false
+                  type: text
+                - name: lastName
+                  value: Jhon
+                  disabled: false
+                  type: text
+                - name: email
+                  value: jhon@gmail.comsasas
+                  disabled: false
+                  type: text
+                - name: password
+                  value: "1234"
+                  disabled: false
+                  type: text
+                - name: gender
+                  value: male
+                  disabled: false
+                  type: text
+                - name: phone
+                  value: "860632610"
+                  disabled: false
+                  type: text
+                - name: dateOfBirth
+                  value: 1998-07-03
+                  disabled: false
+                  type: text
+                - name: image
+                  disabled: true
+                  fileName: /Users/mac/Documents/Sanoob/Resume/Others/SelvaImg-effd238e.jpg
+                  type: file
+            headers:
+              - name: Content-Type
+                value: multipart/form-data
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: admin
+        meta:
+          id: fld_87e91bea30434655a09283e2fcd822ce
+          created: 1772202913618
+          modified: 1772202913618
+          sortKey: -1772202904086
+          description: ""
+        children:
+          - name: students
+            meta:
+              id: fld_31cd4d2aca384e2598d8f6ec9962ffb4
+              created: 1772202913631
+              modified: 1772202913631
+              sortKey: -1772202904085
+              description: ""
+            children:
+              - url: "{{base_url}}students"
+                name: Get All Students
+                meta:
+                  id: req_35185e90b3de4582a60367d6eb0e70c6
+                  created: 1772202913631
+                  modified: 1772202913631
+                  isPrivate: false
+                  description: "Generated from cURL: curl --location --request GET
+                    '{{baseUrl}}/api/students'"
+                  sortKey: -1772202904084
+                method: GET
+                parameters:
+                  - name: isActive
+                    value: "false"
+                    disabled: true
+                  - name: isDeleted
+                    value: "true"
+                    disabled: true
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{_['base_url']}}students/c010ebcc-d203-41e0-a85e-8713d677296c/"
+                name: Get Student By Id
+                meta:
+                  id: req_69d8ec99e5e541f8b67a1e1173f58e19
+                  created: 1772202913632
+                  modified: 1772202913632
+                  isPrivate: false
+                  description: "Generated from cURL: curl --location --request GET
+                    '{{baseUrl}}/api/students/:id'"
+                  sortKey: -1772202904083
+                method: GET
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{_['base_url']}}students/c010ebcc-d203-41e0-a85e-8713d677296c/"
+                name: Update Student
+                meta:
+                  id: req_761ab17b627345a6a92a142195067907
+                  created: 1772202913633
+                  modified: 1772202913633
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1772202904081
+                method: PATCH
+                body:
+                  mimeType: multipart/form-data
+                  params:
+                    - name: firstName
+                      value: "Sanoob "
+                      disabled: false
+                      type: text
+                    - name: lastName
+                      value: P003
+                      disabled: false
+                      type: text
+                    - name: email
+                      value: sanoob03@gmail.com
+                      disabled: false
+                      type: text
+                    - name: phone
+                      value: "8606032610"
+                      disabled: false
+                      type: text
+                    - name: gender
+                      value: male
+                      disabled: false
+                      type: text
+                    - name: dateOfBirth
+                      value: 1998-07-03
+                      disabled: false
+                      type: text
+                    - name: image
+                      disabled: false
+                      fileName: /Users/mac/Downloads/logo.png
+                      type: file
+                headers:
+                  - name: Content-Type
+                    value: multipart/form-data
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{base_url}}students"
+                name: Create Student
+                meta:
+                  id: req_cc2bf58e28ce4fe2b2707817d654f239
+                  created: 1772202913633
+                  modified: 1772202913633
+                  isPrivate: false
+                  description: >-
+                    Generated from cURL: curl --location --request POST
+                    '{{baseUrl}}/api/students' --header 'Content-Type:
+                    application/json' --data-raw '{
+                      "name": "{{name}}",
+                      "email": "{{email}}",
+                      "age": {{age}},
+                      "grade": "{{grade}}"
+                    }'
+                  sortKey: -1772202904082
+                method: POST
+                body:
+                  mimeType: multipart/form-data
+                  params:
+                    - name: firstName
+                      value: "Sanoob "
+                      disabled: false
+                      type: text
+                    - name: lastName
+                      value: P03
+                      disabled: false
+                      type: text
+                    - name: email
+                      value: sanoob02@gmail.com
+                      disabled: false
+                      type: text
+                    - name: password
+                      value: "1234"
+                      disabled: false
+                      type: text
+                    - name: phone
+                      value: "8606032612"
+                      disabled: false
+                      type: text
+                    - name: gender
+                      value: male
+                      disabled: false
+                      type: text
+                    - name: dateOfBirth
+                      value: 1998-07-03
+                      disabled: false
+                      type: text
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{_['base_url']}}students/c010ebcc-d203-41e0-a85e-8713d677296c"
+                name: delete student
+                meta:
+                  id: req_b1a28a26be1e4d8d802025ce4657cb05
+                  created: 1772202913634
+                  modified: 1772202913634
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1772202904080
+                method: DELETE
+                body:
+                  mimeType: multipart/form-data
+                  params:
+                    - name: firstName
+                      value: "Sanoob "
+                      disabled: false
+                      type: text
+                    - name: lastName
+                      value: P003
+                      disabled: false
+                      type: text
+                    - name: email
+                      value: sanoob03@gmail.com
+                      disabled: false
+                      type: text
+                    - name: phone
+                      value: "8606032610"
+                      disabled: false
+                      type: text
+                    - name: gender
+                      value: male
+                      disabled: false
+                      type: text
+                    - name: dateOfBirth
+                      value: 1998-07-03
+                      disabled: false
+                      type: text
+                    - name: image
+                      disabled: false
+                      fileName: /Users/mac/Downloads/logo.png
+                      type: file
+                headers:
+                  - name: Content-Type
+                    value: multipart/form-data
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{_['base_url']}}students/03229180-656c-4f7d-9aef-5c9c22e29442/activate"
+                name: Activate Student
+                meta:
+                  id: req_b63a4fde7b8f415ca9a7081f359d9fed
+                  created: 1772202913634
+                  modified: 1772202913634
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1772202904079
+                method: POST
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{_['base_url']}}students/a0151276-00b0-422c-b541-76805fdfd870/reset-pass\
+                  word"
+                name: Reset Password
+                meta:
+                  id: req_c76509e9e6a240f18fbf2689bc98e9bd
+                  created: 1772202913635
+                  modified: 1772202913635
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1772202904078
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                        "password": "12323"
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3ODk2ZjBmLTFjM2YtNGQxMy1iMjQ4LWJhNzEzYzcwODlkOCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MjA0OTMxMSwiZXhwIjoxNzcyNjU0MTExfQ.QSE8-HW0HDZMjFVQNUNN-SX67-kNGDRSZ4tcHh_IkhU
+          prefix: ""
+      - name: instructor
+        meta:
+          id: fld_0136bfbbc0744adbad0971fa3c9021e0
+          created: 1772202913636
+          modified: 1772202913636
+          sortKey: -1772202904076
+          description: ""
+      - name: students
+        meta:
+          id: fld_9f39cf81561b42c39ab2e3b8cdac9174
+          created: 1772202913636
+          modified: 1772202913636
+          sortKey: -1772202904077
+          description: ""
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_a6dce5a57f9c28c762ee1c428001bfb5aa0b1ae4
+    created: 1772202913716
+    modified: 1772202913716
+environments:
+  name: Variables
+  meta:
+    id: env_d2f2b47477d8436bb4877df9fd4706bc
+    created: 1772202913637
+    modified: 1772202913637
+    isPrivate: false
+  data:
+    base_url: ""

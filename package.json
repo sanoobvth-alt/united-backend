@@ -1,0 +1,41 @@
+{
+  "name": "edulink-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "jira:list": "node scripts/jira.js list",
+    "jira:create": "node scripts/jira.js create",
+    "show:folder": "tree -d -L 4 src/app -I \"node_modules|.git|dist|public\" | pbcopy",
+    "show:files": "tree -L 4 src/app -I \"node_modules|.git|dist|public\" | pbcopy",
+    "build": "prisma generate",
+    "postinstall": "prisma generate"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.4.1",
+    "@prisma/client": "^7.4.1",
+    "axios": "^1.13.6",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "moment": "^2.30.1",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "openai": "^6.25.0",
+    "path-to-regexp": "^8.3.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.4.1"
+  }
+}
