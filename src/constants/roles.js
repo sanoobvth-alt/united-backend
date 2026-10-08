@@ -1,3 +1,1 @@
-export const ADMIN = "ADMIN";
-export const INSTRUCTOR = "INSTRUCTOR";
-export const STUDENT = "STUDENT";
+export const USER_TYPES = Object.freeze({ ADMIN: 'ADMIN', BRANCH: 'BRANCH' });

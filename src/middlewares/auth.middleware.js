@@ -1,54 +1,13 @@
-import jwt from "jsonwebtoken";
-import prisma from "../config/prisma.js";
-import ApiError from "../utils/ApiError.js";
+import jwt from 'jsonwebtoken';
+import { ApiError } from '../utils/ApiError.js';
 
-export const authenticate = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    req.user = null;
-    return next(new ApiError(401, "Not authorized"));
-  }
-  const token = authHeader.split(" ")[1];
+export function authenticate(req, _res, next) {
+  const token = req.headers.authorization?.replace(/^Bearer\s+/i, '');
+  if (!token) return next(new ApiError(401, 'Authentication required'));
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-    });
-    if (!user) return next(new ApiError(401, "User not found"));
-    req.user = user;
+    req.auth = jwt.verify(token, process.env.JWT_SECRET);
     next();
-  } catch (error) {
-    next(new ApiError(401, "Invalid token"));
+  } catch {
+    next(new ApiError(401, 'Invalid or expired token'));
   }
-};
-
-export const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new ApiError(403, `Forbidden for ${req.user.role.toLowerCase()} role`),
-      );
-    }
-    next();
-  };
-};
-
-export const optionalAuth = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      req.user = null;
-      return next();
-    }
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-    });
-    req.user = user || null;
-    next();
-  } catch (error) {
-    req.user = null;
-    next();
-  }
-};
+}

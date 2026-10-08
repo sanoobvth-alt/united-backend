@@ -1,7 +1,9 @@
+import "dotenv/config";
 import app from "./src/app.js";
+import { prisma } from "./src/config/prisma.js";
 import os from "os";
 
-const PORT = process.env.PORT || 3000;
+const port = Number(process.env.PORT || 3000);
 
 const getLocalIP = () => {
   const interfaces = os.networkInterfaces();
@@ -15,13 +17,19 @@ const getLocalIP = () => {
   return "localhost";
 };
 
-app.listen(PORT, () => {
+const server = app.listen(port, () => {
   const ip = getLocalIP();
-
-  if (process.env.NODE_ENV === "production") {
-    console.log(`Server running at https://yourdomain.com`);
-  } else {
-    console.log(`  Local:   http://localhost:${PORT}`);
-    console.log(`  Network: http://${ip}:${PORT}`);
-  }
+  console.log(`  Local:   http://localhost:${port}`);
+  console.log(`  Network: http://${ip}:${port}`);
 });
+
+async function shutdown(signal) {
+  console.info(`${signal} received; shutting down`);
+  server.close(async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+}
+
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));

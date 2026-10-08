@@ -1,45 +1,7 @@
-node_modules
-# Keep environment variables out of version control
-.env
-
-# Node modules
 node_modules/
-
-# Environment variables
-
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Prisma
-# prisma/migrations/
-# .prisma/
-# generated/prisma/client/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Build folders
-dist/
-build/
-
-# Coverage
+.env
 coverage/
-
-# IDE
-.vscode/
-.idea/
-
-# Mac
-.DS_Store
-# generated/prisma/client/edge.js
-# generated/prisma/client/index-browser.js
-# generated/prisma/client/index.d.ts
-# generated/prisma/client/index.js
-# generated/prisma/client/package.json
-# generated/prisma/client/schema.prisma
+public/uploads/*
+!public/uploads/.gitkeep
+generated/
+npm-debug.log*

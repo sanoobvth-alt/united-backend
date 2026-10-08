@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { authenticate } from '../../middlewares/auth.middleware.js';
+import { authorize } from '../../middlewares/authorization.middleware.js';
+import { asyncHandler } from '../../utils/async-handler.js';
+import { reportsController } from './reports.controller.js';
+const router = Router();
+router.get('/summary', authenticate, authorize('report:read'), asyncHandler(reportsController.summary));
+router.get('/renewals', authenticate, authorize('report:read'), asyncHandler(reportsController.renewals));
+router.get('/commissions', authenticate, authorize('report:read'), asyncHandler(reportsController.commissions));
+export default router;
