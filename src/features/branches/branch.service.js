@@ -12,9 +12,17 @@ function getScope(auth) {
 export const branchService = {
   async list(auth, query) {
     const where = getScope(auth);
-    if (auth.userType === "BRANCH") { delete where.branchId; where.id = auth.branchId; }
+    if (auth.userType === "BRANCH") {
+      delete where.branchId;
+      where.id = auth.branchId;
+    }
     if (query.status) where.status = query.status;
-    if (query.search) where.OR = [{ name: { contains: query.search, mode: "insensitive" } }, { code: { contains: query.search, mode: "insensitive" } }, { username: { contains: query.search, mode: "insensitive" } }];
+    if (query.search)
+      where.OR = [
+        { name: { contains: query.search, mode: "insensitive" } },
+        { code: { contains: query.search, mode: "insensitive" } },
+        { username: { contains: query.search, mode: "insensitive" } },
+      ];
     const { skip, take } = getPagination(query.page, query.limit);
     const orderBy = { [query.sortBy || "createdAt"]: query.sortOrder };
     const [records, total] = await Promise.all([
@@ -31,16 +39,25 @@ export const branchService = {
     return record;
   },
   async create(auth, input) {
-    if (auth.userType !== "ADMIN") throw new ApiError(403, "Only admins can create branches");
+    if (auth.userType !== "ADMIN")
+      throw new ApiError(403, "Only admins can create branches");
     const passwordHash = await bcrypt.hash(input.password, 12);
     const { password, ...branchData } = input;
-    return branchModel.create({ ...branchData, adminId: auth.id, passwordHash });
+    return branchModel.create({
+      ...branchData,
+      adminId: auth.id,
+      passwordHash,
+    });
   },
   async update(auth, id, input) {
-    if (auth.userType !== "ADMIN") throw new ApiError(403, "Only admins can update branches");
+    if (auth.userType !== "ADMIN")
+      throw new ApiError(403, "Only admins can update branches");
     await this.get(auth, id);
     const data = { ...input };
-    if (data.password) { data.passwordHash = await bcrypt.hash(data.password, 12); delete data.password; }
+    if (data.password) {
+      data.passwordHash = await bcrypt.hash(data.password, 12);
+      delete data.password;
+    }
     return branchModel.update(id, data);
   },
 };

@@ -1,5 +1,5 @@
 export const PERMISSIONS = Object.freeze({
-  "branch:read": ["ADMIN", "BRANCH"],
+  "branch:read": ["ADMIN"],
   "branch:create": ["ADMIN"],
   "branch:update": ["ADMIN"],
   "staff:read": ["ADMIN", "BRANCH"],
