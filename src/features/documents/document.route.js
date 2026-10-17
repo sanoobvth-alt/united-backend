@@ -9,10 +9,40 @@ import { uploadDocument } from "../../middlewares/upload.middleware.js";
 
 const router = Router();
 
-router.get("/", authenticate, authorize("document:read"), validate(documentQuerySchema, "query"), asyncHandler(documentController.list));
-router.post("/upload", authenticate, authorize("document:create"), uploadDocument, asyncHandler(documentController.upload));
-router.get("/:id/content", authenticate, authorize("document:read"), validate(documentIdSchema, "params"), asyncHandler(documentController.content));
-router.get("/:id", authenticate, authorize("document:read"), validate(documentIdSchema, "params"), asyncHandler(documentController.get));
-router.delete("/:id", authenticate, authorize("document:delete"), validate(documentIdSchema, "params"), asyncHandler(documentController.remove));
+router.get(
+  "/",
+  authenticate,
+  authorize("document:read"),
+  validate(documentQuerySchema, "query"),
+  asyncHandler(documentController.list),
+);
+router.post(
+  "/upload",
+  authenticate,
+  authorize("document:create"),
+  uploadDocument,
+  asyncHandler(documentController.upload),
+);
+router.get(
+  "/:id/content",
+  authenticate,
+  authorize("document:read"),
+  validate(documentIdSchema, "params"),
+  asyncHandler(documentController.content),
+);
+router.get(
+  "/:id",
+  authenticate,
+  authorize("document:read"),
+  validate(documentIdSchema, "params"),
+  asyncHandler(documentController.get),
+);
+router.delete(
+  "/:id",
+  authenticate,
+  authorize("document:delete"),
+  validate(documentIdSchema, "params"),
+  asyncHandler(documentController.remove),
+);
 
 export default router;

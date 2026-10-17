@@ -14,7 +14,12 @@ export const leadService = {
   async list(auth, query) {
     const where = getScope(auth);
     if (query.status) where.status = query.status;
-    if (query.search) where.OR = [{ name: { contains: query.search, mode: "insensitive" } }, { phone: { contains: query.search, mode: "insensitive" } }, { interest: { contains: query.search, mode: "insensitive" } }];
+    if (query.search)
+      where.OR = [
+        { name: { contains: query.search, mode: "insensitive" } },
+        { phone: { contains: query.search, mode: "insensitive" } },
+        { interest: { contains: query.search, mode: "insensitive" } },
+      ];
     const { skip, take } = getPagination(query.page, query.limit);
     const orderBy = { [query.sortBy || "createdAt"]: query.sortOrder };
     const [records, total] = await Promise.all([
@@ -46,11 +51,38 @@ export const leadService = {
   },
   async convert(auth, id) {
     const lead = await this.get(auth, id);
-    if (lead.convertedCustomerId) throw new ApiError(409, "Lead has already been converted");
+    if (lead.convertedCustomerId)
+      throw new ApiError(409, "Lead has already been converted");
     return prisma.$transaction(async (tx) => {
-      const customer = await customerModel.create({ branchId: lead.branchId, staffId: lead.staffId, name: lead.name, phone: lead.phone, email: lead.email, notes: lead.notes }, tx);
-      await leadModel.update(id, { status: "CONVERTED", convertedCustomerId: customer.id, convertedAt: new Date() }, tx);
-      await tx.activity.create({ data: { branchId: lead.branchId, customerId: customer.id, type: "LEAD_CONVERTED", title: "Lead converted to customer", description: `Lead ${lead.name} was converted` } });
+      const customer = await customerModel.create(
+        {
+          branchId: lead.branchId,
+          staffId: lead.staffId,
+          name: lead.name,
+          phone: lead.phone,
+          email: lead.email,
+          notes: lead.notes,
+        },
+        tx,
+      );
+      await leadModel.update(
+        id,
+        {
+          status: "CONVERTED",
+          convertedCustomerId: customer.id,
+          convertedAt: new Date(),
+        },
+        tx,
+      );
+      await tx.activity.create({
+        data: {
+          branchId: lead.branchId,
+          customerId: customer.id,
+          type: "LEAD_CONVERTED",
+          title: "Lead converted to customer",
+          description: `Lead ${lead.name} was converted`,
+        },
+      });
       return { customer, leadId: lead.id };
     });
   },
@@ -58,7 +90,8 @@ export const leadService = {
 
 function getBranchId(auth, input) {
   const branchId = auth.userType === "ADMIN" ? input.branchId : auth.branchId;
-  if (!branchId) throw new ApiError(400, "branchId is required for admin-created records");
+  if (!branchId)
+    throw new ApiError(400, "branchId is required for admin-created records");
   return branchId;
 }
 
@@ -66,5 +99,6 @@ async function validateStaff(auth, staffId, branchId) {
   if (!staffId) return;
   const scope = auth.userType === "ADMIN" ? { branchId } : getScope(auth);
   const staff = await staffModel.findFirst({ id: staffId, ...scope });
-  if (!staff) throw new ApiError(400, "staffId is invalid or outside this branch");
+  if (!staff)
+    throw new ApiError(400, "staffId is invalid or outside this branch");
 }
