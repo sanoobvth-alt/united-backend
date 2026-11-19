@@ -5,7 +5,6 @@ export function serializeDocument(record) {
     branchId: record.branchId,
     customerId: record.customerId,
     policyId: record.policyId,
-    claimId: record.claimId,
     type: record.type,
     fileName: record.fileName,
     fileUrl: record.fileUrl?.startsWith("/uploads/")

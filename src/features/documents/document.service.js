@@ -3,7 +3,6 @@ import { ApiError } from "../../utils/ApiError.js";
 import { documentModel } from "./document.model.js";
 import { customerModel } from "../customers/customer.model.js";
 import { policyModel } from "../policies/policy.model.js";
-import { claimModel } from "../claims/claim.model.js";
 import {
   getUploadPath,
   removeUploadedFile,
@@ -55,10 +54,6 @@ export const documentService = {
         relatedRecords.push(
           await policyModel.findFirst({ id: metadata.policyId, ...scope }),
         );
-      if (metadata.claimId)
-        relatedRecords.push(
-          await claimModel.findFirst({ id: metadata.claimId, ...scope }),
-        );
       if (relatedRecords.some((record) => !record))
         throw new ApiError(
           400,
@@ -73,6 +68,16 @@ export const documentService = {
           throw new ApiError(
             400,
             "Document relations must belong to the same branch",
+          );
+      }
+      if (metadata.customerId && metadata.policyId) {
+        const policy = relatedRecords.find(
+          (record) => record?.id === metadata.policyId,
+        );
+        if (!policy || policy.customerId !== metadata.customerId)
+          throw new ApiError(
+            400,
+            "The selected policy does not belong to the selected customer",
           );
       }
       return await documentModel.create({

@@ -11,6 +11,7 @@ export function serializeCustomer(record) {
     address: record.address,
     notes: record.notes,
     status: record.status,
+    category: record.category,
     staffId: record.staffId,
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,

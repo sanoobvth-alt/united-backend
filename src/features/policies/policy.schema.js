@@ -13,6 +13,12 @@ export const createPolicySchema = z
     startDate: z.coerce.date(),
     expiryDate: z.coerce.date(),
     status: z.enum(["ACTIVE", "EXPIRED", "CANCELLED"]).optional(),
+    insuranceClass: z.enum(["FIRST_CLASS", "THIRD_PARTY"]),
+    vehicleNumber: z.string().trim().nullable().optional(),
+    vehicleType: z.string().trim().nullable().optional(),
+    vehicleDetails: z.string().trim().nullable().optional(),
+    amountPartOne: z.coerce.number().nonnegative().nullable().optional(),
+    amountPartTwo: z.coerce.number().nonnegative().nullable().optional(),
   })
   .strict();
 
@@ -28,6 +34,7 @@ export const policyIdSchema = z.object({ id: z.string().uuid() });
 export const policyQuerySchema = baseListQuerySchema
   .extend({
     status: z.enum(["ACTIVE", "EXPIRED", "CANCELLED"]).optional(),
+    insuranceClass: z.enum(["FIRST_CLASS", "THIRD_PARTY"]).optional(),
     sortBy: z
       .enum(["policyNumber", "expiryDate", "createdAt", "updatedAt"])
       .optional(),

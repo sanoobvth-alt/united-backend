@@ -1,20 +1,22 @@
 # API scope
 
-| Feature | Base path | Available operations |
-|---|---|---|
-| Authentication | `/api/auth` | `POST /admin/login`, `POST /branch/login` |
-| Branches | `/api/branches` | list, create, get, update |
-| Staff | `/api/staff` | CRUD |
-| Customers | `/api/customers` | CRUD |
-| Leads | `/api/leads` | CRUD, `POST /:id/convert` |
-| Policies | `/api/policies` | CRUD |
-| Renewals | `/api/renewals` | list, get, update |
-| Claims | `/api/claims` | CRUD except delete |
-| Follow-ups | `/api/follow-ups` | CRUD |
-| Documents | `/api/documents` | list, upload (`POST /upload` multipart field `file`), get, authenticated content download (`GET /:id/content`), delete |
-| Activities | `/api/activities` | list, get |
-| Commissions | `/api/commissions` | list, create, get, update |
-| Dashboard | `/api/dashboard` | scoped KPI summary |
-| Reports | `/api/reports` | summary, renewals, commissions |
+The active API is limited to the requirements in the United Insurance developer requirements document. WhatsApp messaging and other scheduled/automated notifications are deferred.
 
-List endpoints accept `page`, `limit`, `search`, `status`, `sortBy`, and `sortOrder`. Success responses use `{ success, message?, data, meta? }`; errors use `{ success: false, message, errors? }`.
+| Feature            | Base path                 | Available operations                                                                                                                                                          |
+| ------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Authentication     | `/api/auth`               | `POST /admin/login`, `POST /branch/login`                                                                                                                                     |
+| Branches           | `/api/branches`           | list, create, get, update                                                                                                                                                     |
+| Staff              | `/api/staff`              | CRUD; branch staff management                                                                                                                                                 |
+| Customers          | `/api/customers`          | CRUD, with `UNITED_PARTY`/`THIRD_PARTY` category                                                                                                                              |
+| Policies           | `/api/policies`           | list, create, get, update; First Class requires vehicle number/type; Third Party has no vehicle fields; optional amount breakdown                                             |
+| Policy documents   | `/api/documents`          | list, upload RC/insurance copy/other to a customer or policy, get, authenticated download, delete; policy document checklist at `GET /api/policies/:id/document-requirements` |
+| Customer accounts  | `/api/accounts`           | record charges, payments, credits; list entries; get customer ledger and balance                                                                                              |
+| Expenses           | `/api/expenses`           | CRUD                                                                                                                                                                          |
+| Daily closings     | `/api/daily-closings`     | branch creates and submits; admin reviews; branch can edit drafts                                                                                                             |
+| Reports            | `/api/reports`            | status report, financial collections/expenses summary                                                                                                                         |
+
+Branch users are scoped to their own branch. Admin users can review records across branches and filter account entries or expenses by `branchId`. Success responses use `{ success, message?, data, meta? }`; errors use `{ success: false, message, errors? }`.
+
+Legacy feature tables and source modules are retained for data preservation, but leads, renewals, claims, follow-ups, activities, commissions, and dashboard endpoints are no longer mounted in the API.
+
+Third Party premiums are entered for each policy; there is no configured fixed rate. `amountPartOne` and `amountPartTwo` are components of one policy premium and, when supplied, must add up to `premium`. They are not separate payments. For account ledgers, a charge increases the customer balance and a payment or credit reduces it. A policy can have only one `PAYMENT` entry; it requires `policyId`, and a duplicate returns HTTP 409.

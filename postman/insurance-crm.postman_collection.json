@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "f260c264-9c61-4e5d-9fe5-ff90c2ea4560",
     "name": "Insurance CRM API",
-    "description": "Postman collection for the branch-centric Insurance CRM backend. Import this file, set collection variables, sign in from base, then call the protected routes. Branch IDs and related record IDs are supplied through variables; branch scope is derived from the selected login token.",
+    "description": "Postman collection for the requirements-based United Insurance API. Automation is deferred. Set collection variables and sign in before calling protected routes.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -616,7 +616,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"{{customerName}}\",\n  \"phone\": \"{{customerPhone}}\",\n  \"email\": \"{{customerEmail}}\",\n  \"address\": \"{{customerAddress}}\",\n  \"notes\": \"New CRM customer\"\n}",
+              "raw": "{\n  \"name\": \"{{customerName}}\",\n  \"phone\": \"{{customerPhone}}\",\n  \"email\": \"{{customerEmail}}\",\n  \"address\": \"{{customerAddress}}\",\n  \"notes\": \"Customer notes\",\n  \"category\": \"UNITED_PARTY\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -729,223 +729,6 @@
       ]
     },
     {
-      "name": "Leads",
-      "description": "",
-      "item": [
-        {
-          "name": "List leads",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/leads?page=1&limit=10",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "leads"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create leads",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/leads",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "leads"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"{{leadName}}\",\n  \"phone\": \"{{leadPhone}}\",\n  \"email\": \"{{leadEmail}}\",\n  \"source\": \"Referral\",\n  \"interest\": \"Motor insurance\",\n  \"notes\": \"Interested customer\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        },
-        {
-          "name": "Get leads",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/leads/{{leadId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "leads",
-                "{{leadId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Update leads",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/leads/{{leadId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "leads",
-                "{{leadId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"{{leadName}}\",\n  \"phone\": \"{{leadPhone}}\",\n  \"email\": \"{{leadEmail}}\",\n  \"source\": \"Referral\",\n  \"interest\": \"Motor insurance\",\n  \"notes\": \"Interested customer\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        },
-        {
-          "name": "Delete leads",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/leads/{{leadId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "leads",
-                "{{leadId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Convert lead to customer",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/leads/{{leadId}}/convert",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "leads",
-                "{{leadId}}",
-                "convert"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
       "name": "Policies",
       "description": "",
       "item": [
@@ -1020,7 +803,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"policyNumber\": \"POL-10001\",\n  \"insurer\": \"Example Insurance\",\n  \"product\": \"Comprehensive Motor\",\n  \"policyType\": \"MOTOR\",\n  \"premium\": 1200,\n  \"startDate\": \"2026-10-07T00:00:00.000Z\",\n  \"expiryDate\": \"2027-10-06T00:00:00.000Z\",\n  \"status\": \"ACTIVE\"\n}",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"policyNumber\": \"POL-10001\",\n  \"insurer\": \"Example Insurance\",\n  \"product\": \"Comprehensive Motor\",\n  \"policyType\": \"MOTOR\",\n  \"premium\": 1200,\n  \"startDate\": \"2026-10-07T00:00:00.000Z\",\n  \"expiryDate\": \"2027-10-06T00:00:00.000Z\",\n  \"status\": \"ACTIVE\",\n  \"insuranceClass\": \"FIRST_CLASS\",\n  \"vehicleNumber\": \"ABC-1234\",\n  \"vehicleType\": \"Motorcycle\",\n  \"amountPartOne\": 1100,\n  \"amountPartTwo\": 100\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1104,35 +887,25 @@
       ]
     },
     {
-      "name": "Renewals",
-      "description": "",
+      "name": "Policy documents",
       "item": [
         {
-          "name": "List renewals",
+          "name": "Policy document checklist",
           "request": {
             "method": "GET",
-            "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/renewals?page=1&limit=10",
+              "raw": "{{baseUrl}}/api/policies/{{policyId}}/document-requirements",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "renewals"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
+                "policies",
+                "{{policyId}}",
+                "document-requirements"
               ]
             },
-            "description": "",
+            "header": [],
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1146,22 +919,22 @@
           }
         },
         {
-          "name": "Get renewals",
+          "name": "Policy document checklist",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/renewals/{{renewalId}}",
+              "raw": "{{baseUrl}}/api/policies/{{policyId}}/document-requirements",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "renewals",
-                "{{renewalId}}"
+                "policies",
+                "{{policyId}}",
+                "document-requirements"
               ]
             },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1175,113 +948,21 @@
           }
         },
         {
-          "name": "Update renewals",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/renewals/{{renewalId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "renewals",
-                "{{renewalId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"status\": \"UPCOMING\",\n  \"notes\": \"Follow up with customer\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Claims",
-      "description": "",
-      "item": [
-        {
-          "name": "List claims",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/claims?page=1&limit=10",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "claims"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create claims",
+          "name": "Upload RC or insurance copy",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/claims",
+              "raw": "{{baseUrl}}/api/documents/upload",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "claims"
+                "documents",
+                "upload"
               ]
             },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1293,281 +974,27 @@
               ]
             },
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"policyId\": \"{{policyId}}\",\n  \"claimNumber\": \"CLM-10001\",\n  \"claimDate\": \"2026-10-07T00:00:00.000Z\",\n  \"amount\": 500,\n  \"notes\": \"Claim notes\",\n  \"status\": \"REPORTED\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        },
-        {
-          "name": "Get claims",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/claims/{{claimId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "claims",
-                "{{claimId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "mode": "formdata",
+              "formdata": [
                 {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Update claims",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/claims/{{claimId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "claims",
-                "{{claimId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"policyId\": \"{{policyId}}\",\n  \"claimNumber\": \"CLM-10001\",\n  \"claimDate\": \"2026-10-07T00:00:00.000Z\",\n  \"amount\": 500,\n  \"notes\": \"Claim notes\",\n  \"status\": \"REPORTED\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Follow Ups",
-      "description": "",
-      "item": [
-        {
-          "name": "List follow-ups",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/follow-ups?page=1&limit=10",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "follow-ups"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
                 },
                 {
-                  "key": "limit",
-                  "value": "10"
-                }
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+                  "key": "type",
+                  "value": "RC",
+                  "type": "text"
+                },
                 {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
+                  "key": "policyId",
+                  "value": "{{policyId}}",
+                  "type": "text"
                 }
               ]
             }
           }
         },
-        {
-          "name": "Create follow-ups",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/follow-ups",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "follow-ups"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"title\": \"Renewal call\",\n  \"dueAt\": \"2026-10-14T09:00:00.000Z\",\n  \"notes\": \"Call customer\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        },
-        {
-          "name": "Get follow-ups",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/follow-ups/{{followUpId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "follow-ups",
-                "{{followUpId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Update follow-ups",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/follow-ups/{{followUpId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "follow-ups",
-                "{{followUpId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"title\": \"Renewal call\",\n  \"dueAt\": \"2026-10-14T09:00:00.000Z\",\n  \"notes\": \"Call customer\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        },
-        {
-          "name": "Delete follow-ups",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/follow-ups/{{followUpId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "follow-ups",
-                "{{followUpId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Documents",
-      "description": "",
-      "item": [
         {
           "name": "List documents",
           "request": {
@@ -1593,85 +1020,6 @@
                 }
               ]
             },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Upload document",
-          "request": {
-            "method": "POST",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": ""
-                },
-                {
-                  "key": "type",
-                  "value": "POLICY",
-                  "type": "text"
-                },
-                {
-                  "key": "customerId",
-                  "value": "{{customerId}}",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/documents/upload",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "documents",
-                "upload"
-              ]
-            }
-          },
-          "description": "Uploads a PDF/JPEG/PNG and links it to a customer, policy, or claim."
-        },
-        {
-          "name": "Get document",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/documents/{{documentId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "documents",
-                "{{documentId}}"
-              ]
-            },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1701,7 +1049,34 @@
                 "content"
               ]
             },
-            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get document metadata",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}"
+              ]
+            },
+            "header": [],
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1718,7 +1093,6 @@
           "name": "Delete document",
           "request": {
             "method": "DELETE",
-            "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/documents/{{documentId}}",
               "host": [
@@ -1730,7 +1104,7 @@
                 "{{documentId}}"
               ]
             },
-            "description": "",
+            "header": [],
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1746,22 +1120,22 @@
       ]
     },
     {
-      "name": "Activities",
-      "description": "",
+      "name": "Customer accounts",
       "item": [
         {
-          "name": "List activities",
+          "name": "List account entries",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/activities?page=1&limit=10",
+              "raw": "{{baseUrl}}/api/accounts/transactions?page=1&limit=10",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "activities"
+                "accounts",
+                "transactions"
               ],
               "query": [
                 {
@@ -1774,7 +1148,6 @@
                 }
               ]
             },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1788,80 +1161,7 @@
           }
         },
         {
-          "name": "Get activity",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/activities/{{activityId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "activities",
-                "{{activityId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Commissions",
-      "description": "",
-      "item": [
-        {
-          "name": "List commissions",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/commissions?page=1&limit=10",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "commissions"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create commissions",
+          "name": "Create charge",
           "request": {
             "method": "POST",
             "header": [
@@ -1871,16 +1171,16 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/commissions",
+              "raw": "{{baseUrl}}/api/accounts/transactions",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "commissions"
+                "accounts",
+                "transactions"
               ]
             },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1893,7 +1193,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"policyId\": \"{{policyId}}\",\n  \"customerId\": \"{{customerId}}\",\n  \"amount\": 150,\n  \"status\": \"PENDING\",\n  \"earnedAt\": \"2026-10-07T00:00:00.000Z\"\n}",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"policyId\": \"{{policyId}}\",\n  \"type\": \"CHARGE\",\n  \"amount\": 1200,\n  \"description\": \"Policy premium\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1903,38 +1203,9 @@
           }
         },
         {
-          "name": "Get commissions",
+          "name": "Record payment",
           "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/commissions/{{commissionId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "commissions",
-                "{{commissionId}}"
-              ]
-            },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Update commissions",
-          "request": {
-            "method": "PATCH",
+            "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
@@ -1942,17 +1213,16 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/commissions/{{commissionId}}",
+              "raw": "{{baseUrl}}/api/accounts/transactions",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "commissions",
-                "{{commissionId}}"
+                "accounts",
+                "transactions"
               ]
             },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1965,7 +1235,119 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"policyId\": \"{{policyId}}\",\n  \"customerId\": \"{{customerId}}\",\n  \"amount\": 150,\n  \"status\": \"PENDING\",\n  \"earnedAt\": \"2026-10-07T00:00:00.000Z\"\n}",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"policyId\": \"{{policyId}}\",\n  \"type\": \"PAYMENT\",\n  \"amount\": 1200,\n  \"description\": \"Single policy payment\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get customer ledger",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/customers/{{customerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "customers",
+                "{{customerId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Expenses",
+      "item": [
+        {
+          "name": "List expenses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/expenses?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "expenses"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/expenses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "expenses"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Office\",\n  \"amount\": 250,\n  \"description\": \"Office expense\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1977,25 +1359,131 @@
       ]
     },
     {
-      "name": "Dashboard",
-      "description": "",
+      "name": "Daily closings",
       "item": [
         {
-          "name": "Dashboard KPIs",
+          "name": "List daily closings",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/dashboard",
+              "raw": "{{baseUrl}}/api/daily-closings?page=1&limit=10",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "dashboard"
+                "daily-closings"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
               ]
             },
-            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create daily closing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/daily-closings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "daily-closings"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"closingDate\": \"2026-11-17T00:00:00.000Z\",\n  \"cashReceived\": 0,\n  \"bankReceived\": 0,\n  \"expensesPaid\": 0,\n  \"notes\": \"Daily closing\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get daily closing",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/daily-closings/{{closingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "daily-closings",
+                "{{closingId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit daily closing",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/daily-closings/{{closingId}}/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "daily-closings",
+                "{{closingId}}",
+                "submit"
+              ]
+            },
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -2011,26 +1499,24 @@
       ]
     },
     {
-      "name": "Reports",
-      "description": "",
+      "name": "Reports and settings",
       "item": [
         {
-          "name": "Summary report",
+          "name": "Status report",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/reports/summary",
+              "raw": "{{baseUrl}}/api/reports/status",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "reports",
-                "summary"
+                "status"
               ]
             },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -2044,51 +1530,21 @@
           }
         },
         {
-          "name": "Renewals report",
+          "name": "Financial report",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/reports/renewals",
+              "raw": "{{baseUrl}}/api/reports/financial",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "reports",
-                "renewals"
+                "financial"
               ]
             },
-            "description": "",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Commissions report",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/reports/commissions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "reports",
-                "commissions"
-              ]
-            },
-            "description": "",
             "auth": {
               "type": "bearer",
               "bearer": [

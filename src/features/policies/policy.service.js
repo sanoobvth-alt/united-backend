@@ -13,11 +13,13 @@ export const policyService = {
   async list(auth, query) {
     const where = getScope(auth);
     if (query.status) where.status = query.status;
+    if (query.insuranceClass) where.insuranceClass = query.insuranceClass;
     if (query.search)
       where.OR = [
         { policyNumber: { contains: query.search, mode: "insensitive" } },
         { insurer: { contains: query.search, mode: "insensitive" } },
         { product: { contains: query.search, mode: "insensitive" } },
+        { vehicleNumber: { contains: query.search, mode: "insensitive" } },
       ];
     const { skip, take } = getPagination(query.page, query.limit);
     const orderBy = { [query.sortBy || "createdAt"]: query.sortOrder };
@@ -33,6 +35,36 @@ export const policyService = {
     if (!record) throw new ApiError(404, "Policy not found");
     return record;
   },
+  async documentRequirements(auth, id) {
+    const policy = await this.get(auth, id);
+    if (!policy.insuranceClass)
+      throw new ApiError(
+        409,
+        "Set the policy insuranceClass before checking its documents",
+      );
+    const required =
+      policy.insuranceClass === "FIRST_CLASS"
+        ? ["RC", "INSURANCE_COPY"]
+        : ["RC"];
+    const documents = await prisma.document.findMany({
+      where: {
+        policyId: id,
+        branchId: policy.branchId,
+        type: { in: required },
+      },
+      select: { id: true, type: true, fileName: true, uploadedAt: true },
+      orderBy: { uploadedAt: "desc" },
+    });
+    return {
+      policyId: id,
+      insuranceClass: policy.insuranceClass,
+      requirements: required.map((type) => ({
+        type,
+        uploaded: documents.some((document) => document.type === type),
+        documents: documents.filter((document) => document.type === type),
+      })),
+    };
+  },
   async create(auth, input) {
     const branchId = auth.userType === "ADMIN" ? input.branchId : auth.branchId;
     if (!branchId)
@@ -44,26 +76,13 @@ export const policyService = {
     });
     if (!customer)
       throw new ApiError(400, "customerId is invalid or outside this branch");
-    return prisma.$transaction(async (tx) => {
-      const policy = await policyModel.create({ ...input, branchId }, tx);
-      await tx.renewal.create({
-        data: { branchId, policyId: policy.id, dueDate: policy.expiryDate },
-      });
-      await tx.activity.create({
-        data: {
-          branchId,
-          customerId: policy.customerId,
-          type: "POLICY_CREATED",
-          title: "Policy added",
-          description: `Policy ${policy.policyNumber} was added`,
-        },
-      });
-      return policy;
-    });
+    await validatePolicyAmounts(input);
+    return policyModel.create({ ...input, branchId });
   },
   async update(auth, id, input) {
     const current = await this.get(auth, id);
     delete input.branchId;
+    await validatePolicyAmounts({ ...current, ...input });
     if (input.customerId) {
       const scope =
         auth.userType === "ADMIN"
@@ -79,3 +98,43 @@ export const policyService = {
     return policyModel.update(id, input);
   },
 };
+
+async function validatePolicyAmounts(data) {
+  if (!data.insuranceClass)
+    throw new ApiError(400, "insuranceClass is required");
+  if (
+    data.insuranceClass === "FIRST_CLASS" &&
+    (!data.vehicleNumber || !data.vehicleType)
+  )
+    throw new ApiError(
+      400,
+      "vehicleNumber and vehicleType are required for First Class policies",
+    );
+  if (data.insuranceClass === "THIRD_PARTY") {
+    if (data.vehicleNumber || data.vehicleType || data.vehicleDetails)
+      throw new ApiError(
+        400,
+        "Third-party policies must not include vehicle details",
+      );
+  }
+  const hasPartOne = data.amountPartOne != null;
+  const hasPartTwo = data.amountPartTwo != null;
+  if (hasPartOne !== hasPartTwo)
+    throw new ApiError(
+      400,
+      "Both amountPartOne and amountPartTwo are required together",
+    );
+  if (
+    hasPartOne &&
+    Math.abs(
+      Number(data.amountPartOne) +
+        Number(data.amountPartTwo) -
+        Number(data.premium),
+    ) >= 0.005
+  ) {
+    throw new ApiError(
+      400,
+      "amountPartOne and amountPartTwo must add up to premium",
+    );
+  }
+}

@@ -22,15 +22,14 @@ const signatures = {
 };
 const metadataSchema = z
   .object({
-    type: z.string().trim().min(1),
+    type: z.enum(["RC", "INSURANCE_COPY", "OTHER"]),
     customerId: z.string().uuid().optional(),
     policyId: z.string().uuid().optional(),
-    claimId: z.string().uuid().optional(),
   })
   .strict()
   .refine(
-    (data) => data.customerId || data.policyId || data.claimId,
-    "Link the document to a customer, policy, or claim",
+    (data) => data.customerId || data.policyId,
+    "Link the document to a customer or policy",
   );
 
 const storage = multer.diskStorage({

@@ -12,6 +12,12 @@ export function serializePolicy(record) {
     startDate: record.startDate,
     expiryDate: record.expiryDate,
     status: record.status,
+    insuranceClass: record.insuranceClass,
+    vehicleNumber: record.vehicleNumber,
+    vehicleType: record.vehicleType,
+    vehicleDetails: record.vehicleDetails,
+    amountPartOne: record.amountPartOne,
+    amountPartTwo: record.amountPartTwo,
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
   };

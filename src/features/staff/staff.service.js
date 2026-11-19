@@ -3,8 +3,6 @@ import { ApiError } from "../../utils/ApiError.js";
 import { staffModel } from "./staff.model.js";
 
 function getScope(auth) {
-  console.log(auth);
-
   if (auth.userType === "ADMIN") return {};
   return { branchId: auth.branchId };
 }

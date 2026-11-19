@@ -14,6 +14,14 @@ import {
 const router = Router();
 
 router.get(
+  "/:id/document-requirements",
+  authenticate,
+  authorize("policy:read"),
+  validate(policyIdSchema, "params"),
+  asyncHandler(policyController.documentRequirements),
+);
+
+router.get(
   "/",
   authenticate,
   authorize("policy:read"),

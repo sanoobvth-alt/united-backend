@@ -17,6 +17,13 @@ export const policyController = {
     const record = await policyService.get(req.auth, req.params.id);
     res.json({ success: true, data: serializePolicy(record) });
   },
+  async documentRequirements(req, res) {
+    const result = await policyService.documentRequirements(
+      req.auth,
+      req.params.id,
+    );
+    res.json({ success: true, data: result });
+  },
   async create(req, res) {
     const record = await policyService.create(req.auth, req.body);
     res.status(201).json({
