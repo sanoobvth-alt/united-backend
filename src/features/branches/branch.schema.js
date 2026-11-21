@@ -4,7 +4,6 @@ import { baseListQuerySchema } from "../../utils/query-params.js";
 export const createBranchSchema = z
   .object({
     name: z.string().trim().min(1),
-    code: z.string().trim().min(1),
     phone: z.string().trim().nullable().optional(),
     email: z.string().email().nullable().optional(),
     address: z.string().trim().nullable().optional(),

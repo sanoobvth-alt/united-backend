@@ -3,6 +3,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { branchModel } from "./branch.model.js";
 import { prisma } from "../../config/prisma.js";
 import bcrypt from "bcryptjs";
+import { randomUUID } from "node:crypto";
 
 function getScope(auth) {
   if (auth.userType === "ADMIN") return {};
@@ -45,6 +46,7 @@ export const branchService = {
     const { password, ...branchData } = input;
     return branchModel.create({
       ...branchData,
+      code: `BR-${randomUUID().replaceAll("-", "").slice(0, 10).toUpperCase()}`,
       adminId: auth.id,
       passwordHash,
     });

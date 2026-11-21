@@ -300,7 +300,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"North Branch\",\n  \"code\": \"NORTH-01\",\n  \"username\": \"north-branch\",\n  \"password\": \"{{newBranchPassword}}\",\n  \"phone\": \"+1-555-0100\",\n  \"email\": \"north@example.com\",\n  \"address\": \"100 Main Street\"\n}",
+              "raw": "{\n  \"name\": \"North Branch\",\n  \"username\": \"north-branch\",\n  \"password\": \"{{newBranchPassword}}\",\n  \"phone\": \"+1-555-0100\",\n  \"email\": \"north@example.com\",\n  \"address\": \"100 Main Street\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -372,7 +372,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"North Branch\",\n  \"code\": \"NORTH-01\",\n  \"username\": \"north-branch\",\n  \"password\": \"{{newBranchPassword}}\",\n  \"phone\": \"+1-555-0100\",\n  \"email\": \"north@example.com\",\n  \"address\": \"100 Main Street\"\n}",
+              "raw": "{\n  \"name\": \"North Branch\",\n  \"username\": \"north-branch\",\n  \"password\": \"{{newBranchPassword}}\",\n  \"phone\": \"+1-555-0100\",\n  \"email\": \"north@example.com\",\n  \"address\": \"100 Main Street\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

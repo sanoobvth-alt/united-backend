@@ -24,4 +24,5 @@ export const PERMISSIONS = Object.freeze({
   "closing:read": ["ADMIN", "BRANCH"],
   "closing:write": ["BRANCH"],
   "report:read": ["ADMIN", "BRANCH"],
+  "dev:read": ["ADMIN"],
 });

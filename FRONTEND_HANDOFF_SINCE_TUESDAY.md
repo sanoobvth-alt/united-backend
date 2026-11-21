@@ -12,6 +12,7 @@
 - Clarified that `amountPartOne` and `amountPartTwo` are components of one policy premium. They are not payment records.
 - A policy can have one `PAYMENT` ledger entry. The payment request needs `policyId`; a second payment for that policy returns HTTP `409`.
 - The development server uses `PORT` (default `3000`) and tries the next port when the configured port is occupied. The frontend should use the URL printed when the backend starts.
+- Branch creation no longer requires a client-supplied `code`; the backend generates it. Continue to use the branch `username` and supplied password for branch login.
 
 ## API connection
 

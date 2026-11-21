@@ -8,6 +8,7 @@ import documentRoutes from "../features/documents/document.route.js";
 import accountingRoutes, {
   accountingReportRoutes,
 } from "../features/accounting/accounting.route.js";
+import devRoutes from "../features/dev/dev.route.js";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use("/accounts", accountingRoutes.accounts);
 router.use("/expenses", accountingRoutes.expenses);
 router.use("/daily-closings", accountingRoutes.closings);
 router.use("/reports", accountingReportRoutes);
+router.use("/dev", devRoutes);
 
 export default router;
