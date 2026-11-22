@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { baseListQuerySchema } from "../../utils/query-params.js";
 
-export const createPolicySchema = z
+const policyFieldsSchema = z
   .object({
     branchId: z.string().uuid().optional(),
     customerId: z.string().uuid(),
     policyNumber: z.string().trim().min(1),
-    insurer: z.string().trim().min(1),
+    insurerType: z.enum(["UNITED", "THIRD_PARTY"]),
+    insurerId: z.string().uuid().nullable().optional(),
     product: z.string().trim().min(1),
-    policyType: z.string().trim().min(1),
     premium: z.coerce.number().nonnegative(),
     startDate: z.coerce.date(),
     expiryDate: z.coerce.date(),
@@ -22,12 +22,51 @@ export const createPolicySchema = z
   })
   .strict();
 
-export const updatePolicySchema = createPolicySchema
+const validateInsurerSelection = (data, ctx) => {
+  if (data.insurerType === "UNITED" && data.insurerId) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["insurerId"],
+      message: "United policies must not specify insurerId",
+    });
+  }
+  if (data.insurerType === "THIRD_PARTY" && !data.insurerId) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["insurerId"],
+      message: "Select an insurer for third-party policies",
+    });
+  }
+};
+
+export const createPolicySchema = policyFieldsSchema.superRefine(
+  validateInsurerSelection,
+);
+
+export const updatePolicySchema = policyFieldsSchema
   .partial()
-  .refine(
-    (data) => Object.keys(data).length > 0,
-    "At least one field is required",
-  );
+  .superRefine((data, ctx) => {
+    if (Object.keys(data).length === 0) {
+      ctx.addIssue({
+        code: "custom",
+        message: "At least one field is required",
+      });
+    }
+    if (data.insurerType === "UNITED" && data.insurerId) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["insurerId"],
+        message: "United policies must not specify insurerId",
+      });
+    }
+    if (data.insurerType === "THIRD_PARTY" && !data.insurerId) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["insurerId"],
+        message: "Select an insurer for third-party policies",
+      });
+    }
+  });
 
 export const policyIdSchema = z.object({ id: z.string().uuid() });
 

@@ -17,7 +17,11 @@ export const policyService = {
     if (query.search)
       where.OR = [
         { policyNumber: { contains: query.search, mode: "insensitive" } },
-        { insurer: { contains: query.search, mode: "insensitive" } },
+        {
+          insurerRecord: {
+            is: { name: { contains: query.search, mode: "insensitive" } },
+          },
+        },
         { product: { contains: query.search, mode: "insensitive" } },
         { vehicleNumber: { contains: query.search, mode: "insensitive" } },
       ];
@@ -77,12 +81,14 @@ export const policyService = {
     if (!customer)
       throw new ApiError(400, "customerId is invalid or outside this branch");
     await validatePolicyAmounts(input);
-    return policyModel.create({ ...input, branchId });
+    const insurerFields = await resolveInsurerFields(input);
+    return policyModel.create({ ...input, ...insurerFields, branchId });
   },
   async update(auth, id, input) {
     const current = await this.get(auth, id);
     delete input.branchId;
     await validatePolicyAmounts({ ...current, ...input });
+    const insurerFields = await resolveInsurerFields(input, current);
     if (input.customerId) {
       const scope =
         auth.userType === "ADMIN"
@@ -95,9 +101,44 @@ export const policyService = {
       if (!customer)
         throw new ApiError(400, "customerId is invalid or outside this branch");
     }
-    return policyModel.update(id, input);
+    return policyModel.update(id, { ...input, ...insurerFields });
   },
 };
+
+async function resolveInsurerFields(input, current = null) {
+  if (
+    current &&
+    !Object.hasOwn(input, "insurerType") &&
+    !Object.hasOwn(input, "insurerId")
+  ) {
+    return {};
+  }
+  const insurerType = input.insurerType ?? current?.insurerType;
+  const hasInsurerId = Object.hasOwn(input, "insurerId");
+  const insurerId = hasInsurerId ? input.insurerId : current?.insurerId;
+
+  if (insurerType === "UNITED") {
+    if (hasInsurerId && insurerId) {
+      throw new ApiError(400, "United policies must not specify insurerId");
+    }
+    return { insurerType, insurerId: null };
+  }
+
+  if (insurerType !== "THIRD_PARTY") {
+    if (current) return {};
+    throw new ApiError(400, "insurerType is required");
+  }
+  if (!insurerId) {
+    throw new ApiError(400, "Select an insurer for third-party policies");
+  }
+
+  const insurer = await prisma.insurer.findFirst({
+    where: { id: insurerId, isActive: true },
+  });
+  if (!insurer)
+    throw new ApiError(400, "Selected insurer is invalid or inactive");
+  return { insurerType, insurerId: insurer.id };
+}
 
 async function validatePolicyAmounts(data) {
   if (!data.insuranceClass)

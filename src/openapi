@@ -38,6 +38,14 @@ const listParams = [
     schema: { type: "string", enum: ["asc", "desc"], default: "desc" },
   },
 ];
+const insurerListParams = [
+  ...listParams,
+  {
+    name: "isActive",
+    in: "query",
+    schema: { type: "boolean", description: "Set true to return active insurers for policy forms." },
+  },
+];
 const ref = (name) => ({ $ref: `#/components/schemas/${name}` });
 const body = (name) => ({
   required: true,
@@ -52,8 +60,8 @@ const op = (tag, summary, options = {}) => ({
   ...(options.public ? { security: [] } : {}),
   responses: {
     ...errors,
-    ...(options.responses ?? {}),
     [options.status ?? 200]: response,
+    ...(options.responses ?? {}),
   },
 });
 const resource = (
@@ -129,9 +137,10 @@ const customerFields = {
 const policyFields = {
   customerId: uuid,
   policyNumber: { type: "string" },
-  insurer: { type: "string" },
+  insurer: { type: "string", readOnly: true },
+  insurerType: { type: "string", enum: ["UNITED", "THIRD_PARTY"] },
+  insurerId: { ...uuid, nullable: true, description: "Required for THIRD_PARTY insurerType; omitted for UNITED." },
   product: { type: "string" },
-  policyType: { type: "string" },
   premium: amount,
   startDate: { type: "string", format: "date-time" },
   expiryDate: { type: "string", format: "date-time" },
@@ -148,6 +157,15 @@ const policyFields = {
   vehicleDetails: nullableString,
   amountPartOne: { ...amount, nullable: true },
   amountPartTwo: { ...amount, nullable: true },
+};
+const policyResponseFields = {
+  ...policyFields,
+  customerName: {
+    type: "string",
+    nullable: true,
+    readOnly: true,
+    description: "Linked customer's name, or null if no customer is linked.",
+  },
 };
 const dateFilters = ["from", "to"].map((name) => ({
   name,
@@ -189,7 +207,39 @@ const paths = {
   },
   ...resource("/api/staff", "Staff", "Staff", { remove: true }),
   ...resource("/api/customers", "Customers", "Customer", { remove: true }),
-  ...resource("/api/policies", "Policies", "Policy", { remove: false }),
+  "/api/policies": {
+    get: op("Policies", "List policies", {
+      parameters: listParams,
+      responses: {
+        200: {
+          description: "Paginated policy list including linked customer names",
+          content: {
+            "application/json": {
+              schema: ref("PolicyListResponse"),
+            },
+          },
+        },
+      },
+    }),
+    post: op("Policies", "Create policy", {
+      schema: "CreatePolicy",
+      status: 201,
+    }),
+  },
+  "/api/policies/{id}": {
+    parameters: [id],
+    get: op("Policies", "Get policy by ID"),
+    patch: op("Policies", "Update policy", { schema: "UpdatePolicy" }),
+  },
+  "/api/insurers": {
+    get: op("Insurers", "List insurers", { parameters: insurerListParams }),
+    post: op("Insurers", "Create insurer", { schema: "CreateInsurer", status: 201 }),
+  },
+  "/api/insurers/{id}": {
+    parameters: [id],
+    patch: op("Insurers", "Update insurer", { schema: "UpdateInsurer" }),
+    delete: op("Insurers", "Deactivate insurer"),
+  },
   "/api/policies/{id}/document-requirements": {
     get: op("Policies", "Check required policy documents", {
       parameters: [id],
@@ -394,9 +444,8 @@ export const openapiSpec = {
         [
           "customerId",
           "policyNumber",
-          "insurer",
+          "insurerType",
           "product",
-          "policyType",
           "premium",
           "startDate",
           "expiryDate",
@@ -404,6 +453,22 @@ export const openapiSpec = {
         ],
       ),
       UpdatePolicy: model(policyFields),
+      PolicyResponse: model(policyResponseFields),
+      PolicyListResponse: model({
+        success: { type: "boolean" },
+        data: { type: "array", items: ref("PolicyResponse") },
+        meta: {
+          type: "object",
+          properties: {
+            page: { type: "integer" },
+            limit: { type: "integer" },
+            total: { type: "integer" },
+            totalPages: { type: "integer" },
+          },
+        },
+      }, ["success", "data", "meta"]),
+      CreateInsurer: model({ name: { type: "string", maxLength: 120 } }, ["name"]),
+      UpdateInsurer: model({ name: { type: "string", maxLength: 120 }, isActive: { type: "boolean" } }),
       CreateAccountEntry: model(
         {
           customerId: uuid,

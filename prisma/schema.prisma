@@ -29,6 +29,11 @@ enum PolicyStatus {
   CANCELLED
 }
 
+enum InsurerType {
+  UNITED
+  THIRD_PARTY
+}
+
 enum RenewalStatus {
   UPCOMING
   DUE_SOON
@@ -203,9 +208,10 @@ model Policy {
   customerId     String          @db.Uuid
   customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
   policyNumber   String
-  insurer        String
+  insurerType    InsurerType     @default(THIRD_PARTY)
+  insurerId      String?         @db.Uuid
+  insurerRecord  Insurer?        @relation(fields: [insurerId], references: [id], onDelete: Restrict)
   product        String
-  policyType     String
   premium        Decimal         @db.Decimal(12, 2)
   startDate      DateTime
   expiryDate     DateTime
@@ -227,6 +233,19 @@ model Policy {
   @@unique([branchId, policyNumber])
   @@index([branchId, expiryDate])
   @@index([customerId])
+  @@index([insurerId])
+  @@index([insurerType])
+}
+
+model Insurer {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String      @unique
+  isActive  Boolean     @default(true)
+  policies  Policy[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([isActive, name])
 }
 
 model Renewal {

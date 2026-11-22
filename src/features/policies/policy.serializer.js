@@ -4,10 +4,15 @@ export function serializePolicy(record) {
     id: record.id,
     branchId: record.branchId,
     customerId: record.customerId,
+    customerName: record.customer?.name ?? null,
     policyNumber: record.policyNumber,
-    insurer: record.insurer,
+    insurer:
+      record.insurerType === "UNITED"
+        ? "United Insurance"
+        : (record.insurerRecord?.name ?? null),
+    insurerType: record.insurerType,
+    insurerId: record.insurerId,
     product: record.product,
-    policyType: record.policyType,
     premium: record.premium,
     startDate: record.startDate,
     expiryDate: record.expiryDate,
