@@ -6,10 +6,6 @@ export const createCustomerSchema = z
     branchId: z.string().uuid().optional(),
     name: z.string().trim().min(1),
     phone: z.string().trim().min(5),
-    email: z.string().email().nullable().optional(),
-    dob: z.coerce.date().nullable().optional(),
-    address: z.string().trim().nullable().optional(),
-    notes: z.string().trim().nullable().optional(),
     status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
     staffId: z.string().uuid().nullable().optional(),
   })

@@ -7,6 +7,18 @@ import { devController } from "./dev.controller.js";
 
 const router = Router();
 
+router.delete(
+  "/deleteAllCustomer",
+  (req, _res, next) => {
+    if (process.env.NODE_ENV === "production")
+      return next(new ApiError(404, "Not found"));
+    next();
+  },
+  authenticate,
+  authorize("dev:read"),
+  asyncHandler(devController.deleteAllCustomers),
+);
+
 router.get(
   "/branches",
   (req, _res, next) => {

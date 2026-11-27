@@ -2,8 +2,6 @@ import { getPagination, getPaginationMeta } from "../../utils/pagination.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { leadModel } from "./lead.model.js";
 import { staffModel } from "../staff/staff.model.js";
-import { customerModel } from "../customers/customer.model.js";
-import { prisma } from "../../config/prisma.js";
 
 function getScope(auth) {
   if (auth.userType === "ADMIN") return {};
@@ -48,43 +46,6 @@ export const leadService = {
   async remove(auth, id) {
     await this.get(auth, id);
     await leadModel.delete(id);
-  },
-  async convert(auth, id) {
-    const lead = await this.get(auth, id);
-    if (lead.convertedCustomerId)
-      throw new ApiError(409, "Lead has already been converted");
-    return prisma.$transaction(async (tx) => {
-      const customer = await customerModel.create(
-        {
-          branchId: lead.branchId,
-          staffId: lead.staffId,
-          name: lead.name,
-          phone: lead.phone,
-          email: lead.email,
-          notes: lead.notes,
-        },
-        tx,
-      );
-      await leadModel.update(
-        id,
-        {
-          status: "CONVERTED",
-          convertedCustomerId: customer.id,
-          convertedAt: new Date(),
-        },
-        tx,
-      );
-      await tx.activity.create({
-        data: {
-          branchId: lead.branchId,
-          customerId: customer.id,
-          type: "LEAD_CONVERTED",
-          title: "Lead converted to customer",
-          description: `Lead ${lead.name} was converted`,
-        },
-      });
-      return { customer, leadId: lead.id };
-    });
   },
 };
 

@@ -21,17 +21,4 @@ export const reportsService = {
     });
     return rows.map((r) => ({ status: r.status, count: r._count._all }));
   },
-  async commissions(auth) {
-    const rows = await prisma.commission.groupBy({
-      by: ["status"],
-      where: this.scope(auth),
-      _sum: { amount: true },
-      _count: { _all: true },
-    });
-    return rows.map((r) => ({
-      status: r.status,
-      count: r._count._all,
-      amount: r._sum.amount,
-    }));
-  },
 };

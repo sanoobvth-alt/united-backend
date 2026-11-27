@@ -1,6 +1,5 @@
 import { leadService } from "./lead.service.js";
 import { serializeLead } from "./lead.serializer.js";
-import { serializeCustomer } from "../customers/customer.serializer.js";
 
 export const leadController = {
   async list(req, res) {
@@ -40,17 +39,6 @@ export const leadController = {
       success: true,
       message: "Lead deleted successfully",
       data: null,
-    });
-  },
-  async convert(req, res) {
-    const result = await leadService.convert(req.auth, req.params.id);
-    res.status(201).json({
-      success: true,
-      message: "Lead converted successfully",
-      data: {
-        customer: serializeCustomer(result.customer),
-        leadId: result.leadId,
-      },
     });
   },
 };

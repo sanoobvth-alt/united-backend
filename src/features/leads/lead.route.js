@@ -34,13 +34,6 @@ router.post(
   validate(createLeadSchema),
   asyncHandler(leadController.create),
 );
-router.post(
-  "/:id/convert",
-  authenticate,
-  authorize("lead:update"),
-  validate(leadIdSchema, "params"),
-  asyncHandler(leadController.convert),
-);
 router.patch(
   "/:id",
   authenticate,

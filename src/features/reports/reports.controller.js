@@ -6,10 +6,4 @@ export const reportsController = {
   async renewals(req, res) {
     res.json({ success: true, data: await reportsService.renewals(req.auth) });
   },
-  async commissions(req, res) {
-    res.json({
-      success: true,
-      data: await reportsService.commissions(req.auth),
-    });
-  },
 };

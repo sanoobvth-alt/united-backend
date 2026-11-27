@@ -15,8 +15,7 @@ export const customerService = {
     if (query.search)
       where.OR = [
         { name: { contains: query.search, mode: "insensitive" } },
-        { phone: { contains: query.search, mode: "insensitive" } },
-        { email: { contains: query.search, mode: "insensitive" } },
+        { phone: { contains: query.search } },
       ];
     const { skip, take } = getPagination(query.page, query.limit);
     const orderBy = { [query.sortBy || "createdAt"]: query.sortOrder };

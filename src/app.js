@@ -17,7 +17,9 @@ const app = express();
 app.disable("x-powered-by");
 const corsOptions = {
   origin:
-    process.env.NODE_ENV === "development" ? true : "https://yourdomain.com",
+    process.env.NODE_ENV === "development"
+      ? true
+      : "https://united-insurance-front-end.vercel.app/",
   credentials: true,
 };
 

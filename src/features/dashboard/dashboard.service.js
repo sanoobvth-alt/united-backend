@@ -15,8 +15,6 @@ export const dashboardService = {
       leads,
       policies,
       claims,
-      openFollowUps,
-      commissions,
       renewalsDueToday,
       renewalsThisWeek,
       renewalsThisMonth,
@@ -31,8 +29,6 @@ export const dashboardService = {
       }),
       prisma.policy.count({ where: scope }),
       prisma.claim.count({ where: scope }),
-      prisma.followUp.count({ where: { ...scope, status: "PENDING" } }),
-      prisma.commission.aggregate({ where: scope, _sum: { amount: true } }),
       prisma.renewal.count({
         where: {
           ...scope,
@@ -62,8 +58,6 @@ export const dashboardService = {
       openLeads: leads,
       policies,
       claims,
-      openFollowUps,
-      commissionsPendingAmount: commissions._sum.amount,
       renewals: {
         dueToday: renewalsDueToday,
         thisWeek: renewalsThisWeek,

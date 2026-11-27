@@ -16,10 +16,4 @@ router.get(
   authorize("report:read"),
   asyncHandler(reportsController.renewals),
 );
-router.get(
-  "/commissions",
-  authenticate,
-  authorize("report:read"),
-  asyncHandler(reportsController.commissions),
-);
 export default router;

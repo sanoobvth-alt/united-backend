@@ -39,36 +39,6 @@ export const policyService = {
     if (!record) throw new ApiError(404, "Policy not found");
     return record;
   },
-  async documentRequirements(auth, id) {
-    const policy = await this.get(auth, id);
-    if (!policy.insuranceClass)
-      throw new ApiError(
-        409,
-        "Set the policy insuranceClass before checking its documents",
-      );
-    const required =
-      policy.insuranceClass === "FIRST_CLASS"
-        ? ["RC", "INSURANCE_COPY"]
-        : ["RC"];
-    const documents = await prisma.document.findMany({
-      where: {
-        policyId: id,
-        branchId: policy.branchId,
-        type: { in: required },
-      },
-      select: { id: true, type: true, fileName: true, uploadedAt: true },
-      orderBy: { uploadedAt: "desc" },
-    });
-    return {
-      policyId: id,
-      insuranceClass: policy.insuranceClass,
-      requirements: required.map((type) => ({
-        type,
-        uploaded: documents.some((document) => document.type === type),
-        documents: documents.filter((document) => document.type === type),
-      })),
-    };
-  },
   async create(auth, input) {
     const branchId = auth.userType === "ADMIN" ? input.branchId : auth.branchId;
     if (!branchId)

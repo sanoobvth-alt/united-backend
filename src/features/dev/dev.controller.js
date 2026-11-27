@@ -1,6 +1,14 @@
 import { devService } from "./dev.service.js";
 
 export const devController = {
+  async deleteAllCustomers(_req, res) {
+    const result = await devService.deleteAllCustomers();
+    res.json({
+      success: true,
+      data: result,
+      message: "All customers deleted successfully",
+    });
+  },
   async listBranches(_req, res) {
     const branches = await devService.listBranches();
     res.json({
