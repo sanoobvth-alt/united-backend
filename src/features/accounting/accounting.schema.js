@@ -98,7 +98,6 @@ export const reportQuerySchema = z
     from: optionalDate,
     to: optionalDate,
     branchId: uuid.optional(),
-    category: z.enum(["UNITED_PARTY", "THIRD_PARTY"]).optional(),
     insuranceClass: z.enum(["FIRST_CLASS", "THIRD_PARTY"]).optional(),
     status: z.enum(["ACTIVE", "EXPIRED", "CANCELLED"]).optional(),
   })

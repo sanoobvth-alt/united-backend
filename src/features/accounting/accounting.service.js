@@ -205,13 +205,12 @@ export const accountingService = {
     if (query.status) where.status = query.status;
     if (query.insuranceClass) where.insuranceClass = query.insuranceClass;
     Object.assign(where, dateRange(query.from, query.to, "startDate"));
-    if (query.category) where.customer = { category: query.category };
     const policies = await prisma.policy.findMany({
       where,
       orderBy: { startDate: "desc" },
       include: {
         customer: {
-          select: { id: true, name: true, phone: true, category: true },
+          select: { id: true, name: true, phone: true },
         },
       },
     });
@@ -233,7 +232,6 @@ export const accountingService = {
       customerId: policy.customer.id,
       name: policy.customer.name,
       mobileNumber: policy.customer.phone,
-      customerCategory: policy.customer.category,
       policyId: policy.id,
       policyNumber: policy.policyNumber,
       insuranceClass: policy.insuranceClass,

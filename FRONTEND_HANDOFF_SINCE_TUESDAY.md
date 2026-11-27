@@ -43,7 +43,7 @@ Successful responses use `{ "success": true, "data": ..., "message": ..., "meta"
 | Authentication | `POST /api/auth/admin/login`, `POST /api/auth/branch/login` | Authenticate; use the right role for the view. |
 | Branches | `GET/POST /api/branches`, `GET/PATCH /api/branches/:id` | Admin manages branches; branch users can read their own branch. |
 | Staff | `GET/POST /api/staff`, `GET/PATCH/DELETE /api/staff/:id` | List and manage branch staff. |
-| Customers | `GET/POST /api/customers`, `GET/PATCH/DELETE /api/customers/:id` | Customer CRUD and category. |
+| Customers | `GET/POST /api/customers`, `GET/PATCH/DELETE /api/customers/:id` | Customer CRUD. |
 | Policies | `GET/POST /api/policies`, `GET/PATCH /api/policies/:id` | Policy list, creation, and update. No policy delete route is mounted. |
 | Policy documents | `GET /api/documents`, `POST /api/documents/upload`, `GET /api/documents/:id`, `GET /api/documents/:id/content`, `DELETE /api/documents/:id` | Upload and manage RC, insurance copy, and other documents. |
 | Policy checklist | `GET /api/policies/:id/document-requirements` | Show documents uploaded and missing for a policy. |
@@ -55,9 +55,7 @@ Successful responses use `{ "success": true, "data": ..., "message": ..., "meta"
 
 Reads for customers, policies, staff, documents, accounts, expenses, closings, and reports are available to the roles listed in the API. Branch data is scoped to the authenticated branch. Writes for customer/policy/staff/accounts/documents/expenses/closings are branch operations; branch creation and branch updates are admin operations.
 
-## Customer category and policy form rules
-
-Customer `category` is required and must be `UNITED_PARTY` or `THIRD_PARTY`. This customer category is separate from policy `insuranceClass`.
+## Policy form rules
 
 Policy `insuranceClass` is required and must be `FIRST_CLASS` or `THIRD_PARTY`:
 
@@ -130,7 +128,7 @@ Expense create fields: `category`, `amount`, optional `description`, optional `e
 
 Daily closing fields: `closingDate`, optional `openingBalance`, `cashReceived`, `bankReceived`, `expensesPaid`, optional `closingBalanceDeclared`, and `notes`. The backend allows one closing per branch/date. A closing starts as `DRAFT`; after `POST /api/daily-closings/:id/submit`, it is locked from edits.
 
-`GET /api/reports/status` returns policy/customer rows including name, mobile number, customer category, policy amount, insurance class, vehicle number/category, policy status, and outstanding balance. Supported filters: `from`, `to`, `branchId`, `category`, `insuranceClass`, and `status`.
+`GET /api/reports/status` returns policy/customer rows including name, mobile number, policy amount, insurance class, vehicle number/category, policy status, and outstanding balance. Supported filters: `from`, `to`, `branchId`, `insuranceClass`, and `status`.
 
 `GET /api/reports/financial` returns charges, customer payments/credits, policy premiums and amount components, operating expenses, and `netCashFlow`. The current `netCashFlow` is customer payments minus recorded operating expenses; it is not a formal profit calculation.
 
@@ -143,7 +141,7 @@ WhatsApp messaging, renewal automation, reminders/posters, and Super Admin notif
 ## Frontend implementation checklist
 
 1. Use the actual local URL printed on backend startup; the port may increment from `PORT` when occupied.
-2. Add customer category and policy insurance class to forms using the exact enum values above.
+2. Use the policy insurance class values documented above.
 3. Show vehicle fields for `FIRST_CLASS`; hide/omit them for `THIRD_PARTY`.
 4. Collect a per-policy premium for Third Party; there is no fixed amount lookup.
 5. Treat the two optional amount parts as one premium breakdown and never as two payment requests.

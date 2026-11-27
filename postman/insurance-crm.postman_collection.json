@@ -616,7 +616,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"{{customerName}}\",\n  \"phone\": \"{{customerPhone}}\",\n  \"email\": \"{{customerEmail}}\",\n  \"address\": \"{{customerAddress}}\",\n  \"notes\": \"Customer notes\",\n  \"category\": \"UNITED_PARTY\"\n}",
+              "raw": "{\n  \"name\": \"{{customerName}}\",\n  \"phone\": \"{{customerPhone}}\",\n  \"email\": \"{{customerEmail}}\",\n  \"address\": \"{{customerAddress}}\",\n  \"notes\": \"Customer notes\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

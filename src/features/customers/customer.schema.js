@@ -8,11 +8,9 @@ export const createCustomerSchema = z
     phone: z.string().trim().min(5),
     email: z.string().email().nullable().optional(),
     dob: z.coerce.date().nullable().optional(),
-    gender: z.string().trim().nullable().optional(),
     address: z.string().trim().nullable().optional(),
     notes: z.string().trim().nullable().optional(),
     status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
-    category: z.enum(["UNITED_PARTY", "THIRD_PARTY"]),
     staffId: z.string().uuid().nullable().optional(),
   })
   .strict();
@@ -29,7 +27,6 @@ export const customerIdSchema = z.object({ id: z.string().uuid() });
 export const customerQuerySchema = baseListQuerySchema
   .extend({
     status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
-    category: z.enum(["UNITED_PARTY", "THIRD_PARTY"]).optional(),
     sortBy: z.enum(["name", "createdAt", "updatedAt"]).optional(),
   })
   .strict();

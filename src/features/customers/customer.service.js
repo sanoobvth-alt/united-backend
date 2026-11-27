@@ -12,7 +12,6 @@ export const customerService = {
   async list(auth, query) {
     const where = getScope(auth);
     if (query.status) where.status = query.status;
-    if (query.category) where.category = query.category;
     if (query.search)
       where.OR = [
         { name: { contains: query.search, mode: "insensitive" } },

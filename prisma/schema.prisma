@@ -63,11 +63,6 @@ enum CommissionStatus {
   CANCELLED
 }
 
-enum CustomerCategory {
-  UNITED_PARTY
-  THIRD_PARTY
-}
-
 enum InsuranceClass {
   FIRST_CLASS
   THIRD_PARTY
@@ -157,11 +152,9 @@ model Customer {
   phone          String
   email          String?
   dob            DateTime?
-  gender         String?
   address        String?
   notes          String?
   status         RecordStatus      @default(ACTIVE)
-  category       CustomerCategory?
   policies       Policy[]
   claims         Claim[]
   followUps      FollowUp[]

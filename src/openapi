@@ -127,10 +127,8 @@ const customerFields = {
   phone: { type: "string" },
   email: { type: "string", format: "email", nullable: true },
   dob: { type: "string", format: "date-time", nullable: true },
-  gender: nullableString,
   address: nullableString,
   notes: nullableString,
-  category: { type: "string", enum: ["UNITED_PARTY", "THIRD_PARTY"] },
   status: { type: "string", enum: ["ACTIVE", "INACTIVE"] },
   staffId: { ...uuid, nullable: true },
 };
@@ -370,11 +368,6 @@ const paths = {
         ...dateFilters,
         { name: "branchId", in: "query", schema: uuid },
         {
-          name: "category",
-          in: "query",
-          schema: { type: "string", enum: ["UNITED_PARTY", "THIRD_PARTY"] },
-        },
-        {
           name: "insuranceClass",
           in: "query",
           schema: { type: "string", enum: ["FIRST_CLASS", "THIRD_PARTY"] },
@@ -436,7 +429,7 @@ export const openapiSpec = {
       UpdateStaff: model(staffFields),
       CreateCustomer: model(
         { ...customerFields, branchId: { ...uuid, nullable: true } },
-        ["name", "phone", "category"],
+        ["name", "phone"],
       ),
       UpdateCustomer: model(customerFields),
       CreatePolicy: model(
